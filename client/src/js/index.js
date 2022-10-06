@@ -2,6 +2,7 @@
 import {initdb, postDb, deleteDb, editDb} from './database';
 import {fetchCards} from './cards';
 import { toggleForm, clearForm } from './form';
+// import Unused from '../images/unused-image.png';
 
 // Import CSS files
 import "../css/index.css";
@@ -61,7 +62,7 @@ form.addEventListener('submit', (event) => {
    // Toggles the submit button back to POST functionality
    submitBtnToUpdate = false;
   }
-  
+
   // Clear form
   clearForm();
   // Toggle form
@@ -84,18 +85,24 @@ window.deleteCard = (e) => {
 window.editCard = (e) => {
   // Grabs the id from the button element attached to the contact card and sets a global variable that will be used in the form element.
   profileId = parseInt(e.dataset.id);
-  
+
   // Grabs information to pre-populate edit form
   let editName = e.dataset.name;
   let editEmail = e.dataset.email;
   let editPhone = e.dataset.phone;
-  
+
   document.getElementById("name").value = editName;
   document.getElementById("email").value = editEmail;
   document.getElementById("phone").value = editPhone;
-  
+
   form.style.display = "block";
-  
+
   // Toggles the submit button so that it now Updates an existing contact instead of posting a new one
   submitBtnToUpdate = true;
 };
+
+if ('serviceWorker' in navigator) {
+  // Use the window load event to keep the page load performant
+  window.addEventListener('load', () => {
+  navigator.serviceWorker.register('./service-worker.js');
+})};
