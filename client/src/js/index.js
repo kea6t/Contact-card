@@ -2,7 +2,6 @@
 import {initdb, postDb, deleteDb, editDb} from './database';
 import {fetchCards} from './cards';
 import { toggleForm, clearForm } from './form';
-// import Unused from '../images/unused-image.png';
 
 // Import CSS files
 import "../css/index.css";
@@ -37,11 +36,11 @@ newContactButton.addEventListener('click', event => {
 
 form.addEventListener('submit', (event) => {
   // handle the form data
-  event.preventDefault();
-  let name = document.getElementById("name").value;
-  let phone = document.getElementById("phone").value;
-  let email = document.getElementById("email").value;
-  let profile = document.querySelector('input[type="radio"]:checked').value;
+event.preventDefault();
+let name = document.getElementById("name").value;
+let phone = document.getElementById("phone").value;
+let email = document.getElementById("email").value;
+let profile = document.querySelector('input[type="radio"]:checked').value;
 
   // Post form data to IndexedDB OR Edit an existing card in IndexedDB
   if (submitBtnToUpdate == false) {
@@ -49,10 +48,10 @@ form.addEventListener('submit', (event) => {
   } else {
 
     // Obtains values passed into the form element
-  let name = document.getElementById("name").value;
-  let phone = document.getElementById("phone").value;
-  let email = document.getElementById("email").value;
-  let profile = document.querySelector('input[type="radio"]:checked').value;
+   let name = document.getElementById("name").value;
+   let phone = document.getElementById("phone").value;
+   let email = document.getElementById("email").value;
+   let profile = document.querySelector('input[type="radio"]:checked').value;
 
    // Calls the editDB function passing in any values from the form element as well as the ID of the contact that we are updating
    editDb(profileId, name, email, phone, profile);
@@ -63,12 +62,12 @@ form.addEventListener('submit', (event) => {
    submitBtnToUpdate = false;
   }
 
-  // Clear form
-  clearForm();
-  // Toggle form
-  toggleForm();
-  // Reload the DOM
-  fetchCards();
+// Clear form
+clearForm();
+// Toggle form
+toggleForm();
+// Reload the DOM
+fetchCards();
 })
 
 // Card functionality
@@ -96,13 +95,34 @@ window.editCard = (e) => {
   document.getElementById("phone").value = editPhone;
 
   form.style.display = "block";
-
+  
   // Toggles the submit button so that it now Updates an existing contact instead of posting a new one
   submitBtnToUpdate = true;
 };
 
+// Checks to see if serviceWorker exists in the navigator and installs our service worker configurations
 if ('serviceWorker' in navigator) {
-  // Use the window load event to keep the page load performant
-  window.addEventListener('load', () => {
-  navigator.serviceWorker.register('./service-worker.js');
-})};
+  navigator.serviceWorker.register('./service-worker.js').then(function(reg) {
+      console.log('Successfully registered service worker', reg);
+  }).catch(function(err) {
+      console.warn('Error whilst registering service worker', err);
+  });
+}
+
+  // Install button 
+const installBtn = document.getElementById('installBtn');
+
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  installBtn.style.visibility = 'visible';
+
+  installBtn.addEventListener('click', () => {
+    event.prompt();
+    installBtn.setAttribute('disabled', true);
+    installBtn.textContent = 'Installed!';
+  });
+});
+
+window.addEventListener('appinstalled', (event) => {
+  console.log('👍', 'appinstalled', event);
+});
