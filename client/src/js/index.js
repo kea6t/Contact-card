@@ -109,7 +109,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-  // Install button 
+// Install button
 const installBtn = document.getElementById('installBtn');
 
 window.addEventListener('beforeinstallprompt', (event) => {
